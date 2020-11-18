@@ -33,16 +33,15 @@ class SkillsController extends AbstractController
     public function new(Request $request)
     {
         $newSkill = new Skills();
-        $form = $this->createForm(SkillsType::class,$newSkill);
+        $form = $this->createForm(SkillsType::class, $newSkill);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-        
-        $em->persist($newSkill);
-        $em->flush();
-        return $this->redirectToRoute('admin_skills');
-    
+
+            $em->persist($newSkill);
+            $em->flush();
+            return $this->redirectToRoute('admin_skills');
         }
 
 
@@ -56,19 +55,19 @@ class SkillsController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request,$id)
+    public function edit(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $skill = $em->getRepository(Skills::class)->find($id);
         $form = $this->createForm(SkillsType::class, $skill);
 
-$form->handleRequest($request);
-if ($form->isSubmitted() && $form->isValid()) {
-        
-        $em->persist($skill);
-        $em->flush();
-        return $this->redirectToRoute('admin_skills');
-    }
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($skill);
+            $em->flush();
+            return $this->redirectToRoute('admin_skills');
+        }
 
 
         return $this->render('skills/new.html.twig', [
@@ -76,17 +75,17 @@ if ($form->isSubmitted() && $form->isValid()) {
         ]);
     }
 
-     /**
+    /**
      * @Route("/admin/skills/delete/{id}", name="admin_skills_delete")
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete(Request $request,$id)
+    public function delete(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $skill = $em->getRepository(Skills::class)->find($id);        
+        $skill = $em->getRepository(Skills::class)->find($id);
         $em->remove($skill);
         $em->flush();
-        return $this->redirectToRoute('admin_skills');       
+        return $this->redirectToRoute('admin_skills');
     }
 }

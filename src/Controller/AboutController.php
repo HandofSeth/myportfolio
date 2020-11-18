@@ -21,7 +21,7 @@ class AboutController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $aboutData = $em->getRepository(About::class)->find(1);
-        if($aboutData == Null){
+        if ($aboutData == Null) {
             $aboutData = new About();
         }
         $form = $this->createForm(AboutType::class, $aboutData);
@@ -52,7 +52,7 @@ class AboutController extends AbstractController
                     $oryginalFileName = pathinfo($cvFileName->getClientOriginalName(), PATHINFO_FILENAME);
                     $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
                     $newFileNameCv = $safeFileName . '-' . uniqid() . '.' . $cvFileName->guessExtension();
-                    $cvFileName->move('download/', $newFileNameCv);    
+                    $cvFileName->move('download/', $newFileNameCv);
 
                     $aboutData->setFileNameCv($newFileNameCv);
                     $em->persist($aboutData);
@@ -62,7 +62,7 @@ class AboutController extends AbstractController
                     $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
             }
-         }
+        }
 
         return $this->render('about/index.html.twig', [
             'aboutForm' => $form->createView(),
