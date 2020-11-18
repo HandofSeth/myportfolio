@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SkillsRepository;
+use App\Repository\SummaryNumbersRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SkillsRepository::class)
+ * @ORM\Entity(repositoryClass=SummaryNumbersRepository::class)
  */
-class Skills
+class SummaryNumbers
 {
     /**
      * @ORM\Id
@@ -25,7 +25,7 @@ class Skills
     /**
      * @ORM\Column(type="integer")
      */
-    private $percent;
+    private $numbers;
 
     /**
      * @ORM\Column(type="datetime")
@@ -54,14 +54,14 @@ class Skills
         return $this;
     }
 
-    public function getPercent(): ?int
+    public function getNumbers(): ?int
     {
-        return $this->percent;
+        return $this->numbers;
     }
 
-    public function setPercent(int $percent): self
+    public function setNumbers(int $numbers): self
     {
-        $this->percent = $percent;
+        $this->numbers = $numbers;
 
         return $this;
     }

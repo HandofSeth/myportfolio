@@ -204,38 +204,16 @@
 	{% endfor %}
 </div></div></section><section class="ftco-section ftco-no-pt ftco-no-pb ftco-counter img" id="section-counter"><div class="container-fluid px-md-5">
 <div class="row d-md-flex align-items-center">
-	<div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
-		<div class="block-18 shadow">
-			<div class="text">
-				<strong class="number" data-number="100">0</strong>
-				<span>???</span>
+	{% for summarNumber in summaryNumbersData %}
+		<div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
+			<div class="block-18 shadow">
+				<div class="text">
+					<strong class="number" data-number="{{ summarNumber.numbers }}">0</strong>
+					<span>{{ summarNumber.name }}</span>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
-		<div class="block-18 shadow">
-			<div class="text">
-				<strong class="number" data-number="1200">0</strong>
-				<span>Ukończone Projekty</span>
-			</div>
-		</div>
-	</div>
-	<div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
-		<div class="block-18 shadow">
-			<div class="text">
-				<strong class="number" data-number="1200">0</strong>
-				<span>Happy Customers</span>
-			</div>
-		</div>
-	</div>
-	<div class="col-md d-flex justify-content-center counter-wrap ftco-animate">
-		<div class="block-18 shadow">
-			<div class="text">
-				<strong class="number" data-number="500">0</strong>
-				<span>Cups of coffee</span>
-			</div>
-		</div>
-	</div>
+	{% endfor %}
 </div></div></section><section class="ftco-section contact-section ftco-no-pb" id="contact-section"><div class="container">
 <div class="row justify-content-center mb-5 pb-3">
 	<div class="col-md-7 heading-section text-center ftco-animate">
@@ -384,7 +362,7 @@
 		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 	</p>
 </div></div></div></footer><!-- loader 
-						<div id="ftco-loader" class="show fullscreen">
-							<svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg>
-						</div>
-						-->{% endblock %}
+								<div id="ftco-loader" class="show fullscreen">
+									<svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg>
+								</div>
+								-->{% endblock %}

@@ -1,61 +1,61 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}{{ parent() }}Umiejetności
+{% block title %}
+	{{ parent() }}Umiejetności
 {% endblock %}
 
 {% block body %}
 
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Tables</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
-                        </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                .
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table mr-1"></i>
-                                Tabelka Umiejętności
-                                <a class="btn btn-info" href="{{ path('admin_skills_new') }}">Dodaj umiejętność</a>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Nazwa</th>
-                                                <th>Procent</th>
-                                                <th style='width: 20px'></th>
-                                                <th style='width: 20px'></th>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Nazwa</th>
-                                                <th>Procent</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        	{% for skill in skillsData %}
-                                            <tr>
-                                                <td>{{ skill.name }}</td>
-                                                <td>{{ skill.percent }}</td>
-                                                <td><a href="{{ path('admin_skills_edit' , { 'id': skill.id }) }}" class="btn btn-success">Edycja</a></td>
-                                                <td><a href="{{ path('admin_skills_delete' , { 'id': skill.id }) }}" class="btn btn-danger">Usuń</a></td>
-                                            </tr>
-                                           {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+	<div class="card-header">
+		<i class="fas fa-table mr-1"></i>
+		Tabelka Umiejętności
+		<a class="btn btn-info float-right" href="{{ path('admin_skills_new') }}">Dodaj umiejętność</a>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Nazwa</th>
+						<th>Procent</th>
+						<th style='width: 140px'>Data Dodania</th>
+						<th style='width: 20px'></th>
+						<th style='width: 20px'></th>
+						<th style='width: 15px'></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>Nazwa</th>
+						<th>Procent</th>
+						<th>Data Dodania</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</tfoot>
+				<tbody>
+					{% for skill in skillsData %}
+						<tr>
+							<td>{{ skill.name }}</td>
+							<td>{{ skill.percent }}</td>
+							<td>{{ skill.uploadedAt|date('d.m.Y h:m:s') }}</td>
+							<td>
+								<a href="{{ path('admin_skills_edit' , { 'id': skill.id }) }}" class="btn btn-success">Edycja</a>
+							</td>
+							<td>
+								<a href="{{ path('admin_skills_delete' , { 'id': skill.id }) }}" class="btn btn-danger">Usuń</a>
+							</td>
+							<td>
+							{% if skill.isPublic == '1' %}
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_skills_set_visibility' , { 'id': skill.id , 'visibility' : '0'}) }}'"></td>
+							{% else %}
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_skills_set_visibility' , { 'id': skill.id , 'visibility' : '1'}) }}'"></td>
+						{% endif %}
 
-{% endblock %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>{% endblock %}

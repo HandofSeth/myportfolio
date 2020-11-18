@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SkillsRepository;
+use App\Repository\TechnologiesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SkillsRepository::class)
+ * @ORM\Entity(repositoryClass=TechnologiesRepository::class)
  */
-class Skills
+class Technologies
 {
     /**
      * @ORM\Id
@@ -23,9 +23,9 @@ class Skills
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $percent;
+    private $image_path;
 
     /**
      * @ORM\Column(type="datetime")
@@ -54,14 +54,14 @@ class Skills
         return $this;
     }
 
-    public function getPercent(): ?int
+    public function getImagePath(): ?string
     {
-        return $this->percent;
+        return $this->image_path;
     }
 
-    public function setPercent(int $percent): self
+    public function setImagePath(string $image_path): self
     {
-        $this->percent = $percent;
+        $this->image_path = $image_path;
 
         return $this;
     }

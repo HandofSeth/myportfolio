@@ -1,0 +1,21 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Nowe Liczby Podsumowujace
+{% endblock %}
+
+{% block body %}
+
+	<div class="card-body">
+
+		SEKCJA Liczby Podsumowujace
+		{% form_theme summaryNumbersForm 'bootstrap_4_layout.html.twig' %}
+		{{ form_start(summaryNumbersForm) }}
+		{{ form_row(summaryNumbersForm.name) }}
+		{{ form_row(summaryNumbersForm.numbers) }}
+
+
+		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_end(summaryNumbersForm) }}
+	</div>
+{% endblock %}

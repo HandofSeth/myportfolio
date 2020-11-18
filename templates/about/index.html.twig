@@ -5,31 +5,27 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid">
-		<div class="card mb-4">
-			<div class="card-body">
-				{% for label, messages in app.flashes %}
-					{% for message in messages %}
-						{{message}}
-					{% endfor %}
-				{% endfor %}
-				SEKCJA O MNIE
-				{% form_theme aboutForm 'bootstrap_4_layout.html.twig' %}
-				{{ form_start(aboutForm) }}
-				{{ form_row(aboutForm.rotate) }}
-				{{ form_row(aboutForm.description) }}
-				{{ form_row(aboutForm.name) }}
-				{{ form_row(aboutForm.birth) }}
-				{{ form_row(aboutForm.address) }}
-				{{ form_row(aboutForm.email) }}
-				{{ form_row(aboutForm.phone) }}
-				{{ form_row(aboutForm.projects) }}
-				{{ form_row(aboutForm.fileNamePhoto) }}
-				{{ form_row(aboutForm.fileNameCv) }}
 
-				<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
-				{{ form_end(aboutForm) }}
-			</div>
-		</div>
+
+	<div class="card-header">
+		<i class="fas fa-table mr-1"></i>
+		Główna konfiguracja strony
+	</div>
+	<div class="card-body">
+		{% form_theme aboutForm 'bootstrap_4_layout.html.twig' %}
+		{{ form_start(aboutForm) }}
+		{{ form_row(aboutForm.rotate) }}
+		{{ form_row(aboutForm.description) }}
+		{{ form_row(aboutForm.name) }}
+		{{ form_row(aboutForm.birth) }}
+		{{ form_row(aboutForm.address) }}
+		{{ form_row(aboutForm.email) }}
+		{{ form_row(aboutForm.phone) }}
+		{{ form_row(aboutForm.projects) }}
+		{{ form_row(aboutForm.fileNamePhoto) }}
+		{{ form_row(aboutForm.fileNameCv) }}
+
+		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_end(aboutForm) }}
 	</div>
 {% endblock %}

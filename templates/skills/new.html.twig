@@ -1,25 +1,19 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}{{ parent() }}Nowe Umiejetności
+{% block title %}
+	{{ parent() }}Nowe Umiejetności
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="card mb-4">
-        <div class="card-body">
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        {{message}}
-    {% endfor %}
-{% endfor %}
-    SEKCJA Umiejętności
-    {% form_theme skillsForm 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(skillsForm) }}
-    {{ form_row(skillsForm.name) }}
-    {{ form_row(skillsForm.percent) }}
+<div class="card-body">
+	SEKCJA Umiejętności
+	{% form_theme skillsForm 'bootstrap_4_layout.html.twig' %}
+	{{ form_start(skillsForm) }}
+	{{ form_row(skillsForm.name) }}
+	{{ form_row(skillsForm.percent) }}
 
 
-    <button type="submit" class="btn btn-primary mb-5">Zapisz</button>
-    {{ form_end(skillsForm) }}
-</div></div></div>
+	<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+	{{ form_end(skillsForm) }}
+</div>
 {% endblock %}

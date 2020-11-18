@@ -32,6 +32,16 @@ class Projects
      */
     private $photo_path;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $uploaded_at;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_public;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +79,30 @@ class Projects
     public function setPhotoPath(string $photo_path): self
     {
         $this->photo_path = $photo_path;
+
+        return $this;
+    }
+
+    public function getUploadedAt(): ?\DateTimeInterface
+    {
+        return $this->uploaded_at;
+    }
+
+    public function setUploadedAt(\DateTimeInterface $uploaded_at): self
+    {
+        $this->uploaded_at = $uploaded_at;
+
+        return $this;
+    }
+
+    public function getIsPublic(): ?bool
+    {
+        return $this->is_public;
+    }
+
+    public function setIsPublic(bool $is_public): self
+    {
+        $this->is_public = $is_public;
 
         return $this;
     }
