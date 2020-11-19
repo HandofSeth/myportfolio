@@ -28,14 +28,19 @@ class Skills
     private $percent;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_public;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $uploaded_at;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $is_public;
+    private $modificated_at;
 
     public function getId(): ?int
     {
@@ -66,6 +71,18 @@ class Skills
         return $this;
     }
 
+    public function getIsPublic(): ?bool
+    {
+        return $this->is_public;
+    }
+
+    public function setIsPublic(bool $is_public): self
+    {
+        $this->is_public = $is_public;
+
+        return $this;
+    }
+
     public function getUploadedAt(): ?\DateTimeInterface
     {
         return $this->uploaded_at;
@@ -78,14 +95,14 @@ class Skills
         return $this;
     }
 
-    public function getIsPublic(): ?bool
+    public function getModificatedAt(): ?\DateTimeInterface
     {
-        return $this->is_public;
+        return $this->modificated_at;
     }
 
-    public function setIsPublic(bool $is_public): self
+    public function setModificatedAt(\DateTimeInterface $modificated_at): self
     {
-        $this->is_public = $is_public;
+        $this->modificated_at = $modificated_at;
 
         return $this;
     }

@@ -7,7 +7,6 @@ use App\Form\SummaryNumbersType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SummaryNumbersController extends AbstractController
 {
@@ -37,10 +36,18 @@ class SummaryNumbersController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $newSummaryNumbers->setIsPublic(0);
+                $newSummaryNumbers->setUploadedAt(new \DateTime());
+                $newSummaryNumbers->setModificatedAt(new \DateTime());
+                $em->persist($newSummaryNumbers);
+                $em->flush();
+                $this->addFlash('success', 'Dodano Liczbę');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+            }
 
-            $em->persist($newSummaryNumbers);
-            $em->flush();
             return $this->redirectToRoute('admin_summary_numbers');
         }
 
@@ -58,20 +65,25 @@ class SummaryNumbersController extends AbstractController
     public function edit(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $skill = $em->getRepository(SummaryNumbers::class)->find($id);
-        $form = $this->createForm(SummaryNumbersType::class, $skill);
+        $summaryNumbers = $em->getRepository(SummaryNumbers::class)->find($id);
+        $form = $this->createForm(SummaryNumbersType::class, $summaryNumbers);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $em->persist($skill);
-            $em->flush();
+            try {
+                $summaryNumbers->setModificatedAt(new \DateTime());
+                $em->persist($summaryNumbers);
+                $em->flush();
+                $this->addFlash('success', 'Zmodyfikowano Liczbę');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+            }
             return $this->redirectToRoute('admin_summary_numbers');
         }
 
 
         return $this->render('summary_numbers/new.html.twig', [
-            'summary_numbersForm' => $form->createView(),
+            'summaryNumbersForm' => $form->createView(),
         ]);
     }
 
@@ -80,10 +92,34 @@ class SummaryNumbersController extends AbstractController
      */
     public function delete($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $skill = $em->getRepository(SummaryNumbers::class)->find($id);
-        $em->remove($skill);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $summaryNumbers = $em->getRepository(SummaryNumbers::class)->find($id);
+            $em->remove($summaryNumbers);
+            $em->flush();
+            $this->addFlash('success', 'Usunięto Liczbę');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
+        return $this->redirectToRoute('admin_summary_numbers');
+    }
+
+    /**
+     * @Route("/admin/summary_numbers/set_visibility/{id}{visibility}", name="admin_summary_numbers_set_visibility")
+     */
+    public function makeVisible($id, $visibility)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $summaryNumbers = $em->getRepository(SummaryNumbers::class)->find($id);
+            $summaryNumbers->setModificatedAt(new \DateTime());
+            $summaryNumbers->setIsPublic($visibility);
+            $em->persist($summaryNumbers);
+            $em->flush();
+            $this->addFlash('success', 'Ustawiono aktywność');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
         return $this->redirectToRoute('admin_summary_numbers');
     }
 }

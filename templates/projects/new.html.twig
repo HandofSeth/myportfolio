@@ -9,7 +9,9 @@
     {% form_theme projectsForm 'bootstrap_4_layout.html.twig' %}
     {{ form_start(projectsForm) }}
     {{ form_row(projectsForm.name) }}
+    {{ form_row(projectsForm.page_path) }}
     {{ form_row(projectsForm.description) }}
+    <img style='width: 440px' src="{{ asset('download/')}}{{ projectsForm.photo_path.vars.data }}">
     {{ form_row(projectsForm.photo_path) }}
 
 

@@ -7,8 +7,6 @@ use App\Form\SkillsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SkillsController extends AbstractController
 {
@@ -39,12 +37,13 @@ class SkillsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
+            $newSkill->setIsPublic(0);
+            $newSkill->setUploadedAt(new \DateTime());
+            $newSkill->setModificatedAt(new \DateTime());
             $em->persist($newSkill);
             $em->flush();
             return $this->redirectToRoute('admin_skills');
         }
-
 
         return $this->render('skills/new.html.twig', [
             'skillsForm' => $form->createView(),
@@ -64,7 +63,7 @@ class SkillsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $skill->setModificatedAt(new \DateTime());
             $em->persist($skill);
             $em->flush();
             return $this->redirectToRoute('admin_skills');
@@ -91,10 +90,11 @@ class SkillsController extends AbstractController
     /**
      * @Route("/admin/skills/set_visibility/{id}{visibility}", name="admin_skills_set_visibility")
      */
-    public function makeVisible(Request $request, $id, $visibility)
+    public function makeVisible($id, $visibility)
     {
         $em = $this->getDoctrine()->getManager();
         $skill = $em->getRepository(Skills::class)->find($id);
+        $skill->setModificatedAt(new \DateTime());
         $skill->setIsPublic($visibility);
         $em->persist($skill);
         $em->flush();

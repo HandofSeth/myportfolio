@@ -1,0 +1,18 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}{{ parent() }}Nowe Technologie
+{% endblock %}
+
+{% block body %}
+<div class="card-body">
+    SEKCJA Technologie
+    {% form_theme technologiesForm 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(technologiesForm) }}
+    {{ form_row(technologiesForm.name) }}
+    {{ form_row(technologiesForm.image_path) }}
+
+
+    <button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+    {{ form_end(technologiesForm) }}
+</div>
+{% endblock %}

@@ -19,6 +19,7 @@
 						<th>Nazwa</th>
 						<th>Procent</th>
 						<th style='width: 140px'>Data Dodania</th>
+						<th style='width: 140px'>Data Modyfikacji</th>
 						<th style='width: 20px'></th>
 						<th style='width: 20px'></th>
 						<th style='width: 15px'></th>
@@ -29,6 +30,7 @@
 						<th>Nazwa</th>
 						<th>Procent</th>
 						<th>Data Dodania</th>
+						<th>Data Modyfikacji</th>
 						<th></th>
 						<th></th>
 						<th></th>
@@ -40,6 +42,7 @@
 							<td>{{ skill.name }}</td>
 							<td>{{ skill.percent }}</td>
 							<td>{{ skill.uploadedAt|date('d.m.Y h:m:s') }}</td>
+							<td>{{ skill.modificatedAt|date('d.m.Y h:m:s') }}</td>
 							<td>
 								<a href="{{ path('admin_skills_edit' , { 'id': skill.id }) }}" class="btn btn-success">Edycja</a>
 							</td>

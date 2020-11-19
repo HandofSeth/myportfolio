@@ -1,0 +1,61 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Technologie
+{% endblock %}
+
+{% block body %}
+	<div class="card-header">
+		<i class="fas fa-table mr-1"></i>
+		Tabelka Technologie
+		<a class="btn btn-info float-right" href="{{ path('admin_technologies_new') }}">Dodaj Technologie</a>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Nazwa</th>
+						<th style='width: 40px'>Miniaturka</th>
+						<th style='width: 140px'>Data Dodania</th>
+						<th style='width: 140px'>Data Modyfikacji</th>
+						<th style='width: 20px'></th>
+						<th style='width: 20px'></th>
+						<th style='width: 15px'></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>Nazwa</th>
+						<th>Miniaturka</th>
+						<th>Data Dodania</th>
+						<th>Data Modyfikacji</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</tfoot>
+				<tbody>
+					{% for technology in technologiesData %}
+						<tr>
+							<td>{{ technology.name }}</td>
+							<td><img src="{{ asset('download/')}}{{ technology.imagePath }}" class="img-fluid img-thumbnail"></td>
+							<td>{{ technology.uploadedAt|date('d.m.Y h:m:s') }}</td>
+							<td>{{ technology.modificatedAt|date('d.m.Y h:m:s') }}</td>
+							<td>
+								<a href="{{ path('admin_technologies_edit' , { 'id': technology.id }) }}" class="btn btn-success">Edycja</a>
+							</td>
+							<td>
+								<a href="{{ path('admin_technologies_delete' , { 'id': technology.id }) }}" class="btn btn-danger">Usuń</a>
+							</td>
+							<td>
+								{% if technology.isPublic == '1' %}
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '0'}) }}'"></td>
+							{% else %}
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '1'}) }}'"></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endblock %}

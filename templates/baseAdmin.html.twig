@@ -45,6 +45,13 @@
 								O mnie
 							</a>
 
+							<a class="nav-link" href="{{ path('admin_technologies')}}">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-book-open"></i>
+								</div>
+								Technologie
+							</a>
+
 							<a class="nav-link" href="{{ path('admin_skills')}}">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-book-open"></i>
@@ -72,10 +79,16 @@
 			</div>
 			<div id="layoutSidenav_content">
 				<main>
-					{% for label, messages in app.flashes %}
-						{% for message in messages %}
-							{{message}}
-						{% endfor %}
+					{% for message in app.flashes('success')%}
+						<div class='alert alert-success'>
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('error')%}
+						<div class='alert alert-danger'>
+							{{ message }}
+						</div>
 					{% endfor %}
 					<br>
 					<div class="container-fluid">
@@ -106,4 +119,31 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script src="{{ asset('assets/admin/assets/demo/datatables-demo.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>{% endblock %}</body></html>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script>
+	$('#dataTable').DataTable({
+"language": {
+"sEmptyTable": "Brak danych w tabeli",
+"sInfo": "Pokazuję _START_ do _END_ z _TOTAL_ wpisów",
+"sInfoEmpty": "Pokazuję 0 do 0 z 0 wpisów",
+"sInfoFiltered": "(Przefiltrowano z _MAX_ całkowitych wpisów)",
+"sInfoPostFix": "",
+"sInfoThousands": ",",
+"sLengthMenu": "Pokaż _MENU_ wpisów",
+"sLoadingRecords": "Ładuje...",
+"sProcessing": "Przetwarzam...",
+"sSearch": "Szukaj:",
+"sZeroRecords": "Nie znaleziono pasującego wyniku",
+"oPaginate": {
+"sFirst": "Pierwszy",
+"sLast": "Ostatni",
+"sNext": "Następny",
+"sPrevious": "Poprzedni"
+},
+"oAria": {
+"sSortAscending": ": activate to sort column ascending",
+"sSortDescending": ": activate to sort column descending"
+}
+}
+});
+</script>{% endblock %}</body></html>

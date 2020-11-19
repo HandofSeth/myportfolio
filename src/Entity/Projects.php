@@ -33,14 +33,24 @@ class Projects
     private $photo_path;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=255)
      */
-    private $uploaded_at;
+    private $page_path;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $is_public;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $modificated_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $uploaded_at;
 
     public function getId(): ?int
     {
@@ -83,14 +93,14 @@ class Projects
         return $this;
     }
 
-    public function getUploadedAt(): ?\DateTimeInterface
+    public function getPagePath(): ?string
     {
-        return $this->uploaded_at;
+        return $this->page_path;
     }
 
-    public function setUploadedAt(\DateTimeInterface $uploaded_at): self
+    public function setPagePath(string $page_path): self
     {
-        $this->uploaded_at = $uploaded_at;
+        $this->page_path = $page_path;
 
         return $this;
     }
@@ -103,6 +113,30 @@ class Projects
     public function setIsPublic(bool $is_public): self
     {
         $this->is_public = $is_public;
+
+        return $this;
+    }
+
+    public function getUploadedAt(): ?\DateTimeInterface
+    {
+        return $this->uploaded_at;
+    }
+
+    public function setUploadedAt(\DateTimeInterface $uploaded_at): self
+    {
+        $this->uploaded_at = $uploaded_at;
+
+        return $this;
+    }
+
+    public function getModificatedAt(): ?\DateTimeInterface
+    {
+        return $this->modificated_at;
+    }
+
+    public function setModificatedAt(\DateTimeInterface $modificated_at): self
+    {
+        $this->modificated_at = $modificated_at;
 
         return $this;
     }

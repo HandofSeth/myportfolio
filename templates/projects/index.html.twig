@@ -16,17 +16,24 @@
 				<thead>
 					<tr>
 						<th>Nazwa</th>
+						<th>Adres</th>
 						<th>Opis</th>
 						<th style='width: 40px'>Miniaturka</th>
+						<th style='width: 140px'>Data Dodania</th>
+						<th style='width: 140px'>Data Modyfikacji</th>
 						<th style='width: 20px'></th>
 						<th style='width: 20px'></th>
+						<th style='width: 15px'></th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<th>Nazwa</th>
+						<th>Adres</th>
 						<th>Opis</th>
 						<th>Miniaturka</th>
+						<th>Data Dodania</th>
+						<th>Data Modyfikacji</th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -35,14 +42,23 @@
 					{% for project in projectsData %}
 						<tr>
 							<td>{{ project.name }}</td>
+							<td><a href="{{ project.pagePath }}">{{ project.pagePath }}</a></td>
 							<td>{{ project.description }}</td>
-							<td><img src="{{ asset('download/')}}{{ project.photoPath }}" class="img-fluid img-thumbnail"></td>
+							<td><img src="{{ asset('download/')}}{{ project.photoPath }}" class="img-fluid img-thumbnail"></td>							
+							<td>{{ project.uploadedAt|date('d.m.Y h:m:s') }}</td>
+							<td>{{ project.modificatedAt|date('d.m.Y h:m:s') }}</td>							
 							<td>
 								<a href="{{ path('admin_projects_edit' , { 'id': project.id }) }}" class="btn btn-success">Edycja</a>
 							</td>
 							<td>
 								<a href="{{ path('admin_projects_delete' , { 'id': project.id }) }}" class="btn btn-danger">Usuń</a>
 							</td>
+							<td>
+							{% if project.isPublic == '1' %}
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '0'}) }}'"></td>
+							{% else %}
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '1'}) }}'"></td>
+						{% endif %}
 						</tr>
 					{% endfor %}
 				</tbody>

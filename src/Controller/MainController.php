@@ -8,6 +8,7 @@ use App\Entity\About;
 use App\Entity\Skills;
 use App\Entity\Projects;
 use App\Entity\SummaryNumbers;
+use App\Entity\Technologies;
 
 class MainController extends AbstractController
 {
@@ -19,8 +20,9 @@ class MainController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $aboutData = $em->getRepository(About::class)->find(1);
         $skillsData = $em->getRepository(Skills::class)->findBY(['is_public' => true]);
-        $projectsData = $em->getRepository(Projects::class)->findAll();
-        $summaryNumbersData = $em->getRepository(SummaryNumbers::class)->findAll();
+        $projectsData = $em->getRepository(Projects::class)->findBY(['is_public' => true]);
+        $technologiesData = $em->getRepository(Technologies::class)->findBY(['is_public' => true]);
+        $summaryNumbersData = $em->getRepository(SummaryNumbers::class)->findBY(['is_public' => true]);
 
         $rotateExploded = explode(",", $aboutData->getRotate());
         $rotateImploded = implode('.", "', $rotateExploded);
@@ -29,8 +31,10 @@ class MainController extends AbstractController
             'aboutData' => $aboutData,
             'skillsData' => $skillsData,
             'projectsData' => $projectsData,
+            'technologiesData' => $technologiesData,
             'summaryNumbersData' => $summaryNumbersData,
             'rotateImploded' => $rotateImploded
         ]);
     }
+    
 }

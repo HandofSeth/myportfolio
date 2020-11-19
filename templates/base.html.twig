@@ -23,6 +23,10 @@
 			<link rel="stylesheet" href="{{ asset('assets/css/icomoon.css')}}">
 			<link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
 
+			<link rel="stylesheet" href="{{ asset('assets/slick/slick.scss')}}">
+			<link rel="stylesheet" href="{{ asset('assets/slick/slick-theme.scss')}}">
+
+
 		{% endblock %}
 	</head>
 	<body>
@@ -40,8 +44,18 @@
 			<script src="{{ asset('assets/js/aos.js')}}"></script>
 			<script src="{{ asset('assets/js/jquery.animateNumber.min.js')}}"></script>
 			<script src="{{ asset('assets/js/scrollax.min.js')}}"></script>
+			<script src="{{ asset('assets/js/main.js')}}"></script>
+			<script src="{{ asset('assets/slick/slick.min.js')}}"></script>
 
-			<script src="{{ asset('assets/js/main.js')}}"></scrip>
+			<script type="text/javascript">
+				$(".slider").slick({
+infinite: true,
+slidesToShow: 4,
+slidesToScroll: 1,
+autoplay: true,
+autoplaySpeed: 1000
+});
+			</script>
 		{% endblock %}
 	</body>
-</html>
+</html></body></html>

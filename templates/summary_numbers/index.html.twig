@@ -18,14 +18,20 @@
 					<tr>
 						<th>Nazwa</th>
 						<th>Procent</th>
+						<th style='width: 140px'>Data Dodania</th>
+						<th style='width: 140px'>Data Modyfikacji</th>
 						<th style='width: 20px'></th>
 						<th style='width: 20px'></th>
+						<th style='width: 15px'></th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<th>Nazwa</th>
 						<th>Procent</th>
+						<th>Data Dodania</th>
+						<th>Data Modyfikacji</th>
+						<th></th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -35,14 +41,22 @@
 						<tr>
 							<td>{{ summaryNumber.name }}</td>
 							<td>{{ summaryNumber.numbers }}</td>
+							<td>{{ summaryNumber.uploadedAt|date('d.m.Y h:m:s') }}</td>
+							<td>{{ summaryNumber.modificatedAt|date('d.m.Y h:m:s') }}</td>
 							<td>
 								<a href="{{ path('admin_summary_numbers_edit' , { 'id': summaryNumber.id }) }}" class="btn btn-success">Edycja</a>
 							</td>
 							<td>
 								<a href="{{ path('admin_summary_numbers_delete' , { 'id': summaryNumber.id }) }}" class="btn btn-danger">Usuń</a>
 							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		{% endblock %}
+							<td>
+								{% if summaryNumber.isPublic == '1' %}
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '0'}) }}'"></td>
+							{% else %}
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '1'}) }}'"></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endblock %}

@@ -28,14 +28,19 @@ class Technologies
     private $image_path;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_public;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $uploaded_at;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $is_public;
+    private $modificated_at;
 
     public function getId(): ?int
     {
@@ -86,6 +91,18 @@ class Technologies
     public function setIsPublic(bool $is_public): self
     {
         $this->is_public = $is_public;
+
+        return $this;
+    }
+
+    public function getModificatedAt(): ?\DateTimeInterface
+    {
+        return $this->modificated_at;
+    }
+
+    public function setModificatedAt(\DateTimeInterface $modificated_at): self
+    {
+        $this->modificated_at = $modificated_at;
 
         return $this;
     }
