@@ -6,13 +6,11 @@
 
 {% block body %}
 
-
 	<div class="card-header">
 		<i class="fas fa-table mr-1"></i>
 		Główna konfiguracja strony
 	</div>
 	<div class="card-body">
-
 		{% form_theme aboutForm 'bootstrap_4_layout.html.twig' %}
 		{{ form_start(aboutForm) }}
 		{{ form_row(aboutForm.rotate) }}
@@ -23,10 +21,21 @@
 		{{ form_row(aboutForm.email) }}
 		{{ form_row(aboutForm.phone) }}
 		{{ form_row(aboutForm.projects) }}
-		{{ form_row(aboutForm.fileNamePhoto) }}
+		{% if aboutForm.fileNamePhoto.vars.data != NULL %}
+			<img style='width: 440px' src="{{ asset('download/')}}{{ aboutForm.fileNamePhoto.vars.data }}">
+		{% endif %}
+		{{ form_row(aboutForm.fileNamePhoto, {'attr': {'lang': 'pl'}})  }}
+		{% if aboutForm.fileNameCv.vars.data != NULL %}
+			<embed width="440" height="600" name="plugin" src="{{ asset('download/')}}{{ aboutForm.fileNameCv.vars.data }}" type="application/pdf">
+		{% endif %}
 		{{ form_row(aboutForm.fileNameCv) }}
 
-		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{% if is_granted('ROLE_ADMIN') %}
+			<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{% else %}
+			<a class="btn btn-secondary mb-5" href="#" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Zapisz</a>
+		{% endif %}
+
 		{{ form_end(aboutForm) }}
 	</div>
 {% endblock %}

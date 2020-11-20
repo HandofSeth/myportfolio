@@ -116,7 +116,7 @@ class SummaryNumbersController extends AbstractController
             $summaryNumbers->setIsPublic($visibility);
             $em->persist($summaryNumbers);
             $em->flush();
-            $this->addFlash('success', 'Ustawiono aktywność');
+            $this->addFlash('success', 'Ustawiono widoczność');
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }

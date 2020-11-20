@@ -30,12 +30,12 @@ class Projects
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $photo_path;
+    private $page_path;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $page_path;
+    private $photo_path;
 
     /**
      * @ORM\Column(type="boolean")
@@ -77,18 +77,6 @@ class Projects
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getPhotoPath(): ?string
-    {
-        return $this->photo_path;
-    }
-
-    public function setPhotoPath(string $photo_path): self
-    {
-        $this->photo_path = $photo_path;
 
         return $this;
     }
@@ -137,6 +125,18 @@ class Projects
     public function setModificatedAt(\DateTimeInterface $modificated_at): self
     {
         $this->modificated_at = $modificated_at;
+
+        return $this;
+    }
+
+    public function getPhotoPath(): ?string
+    {
+        return $this->photo_path;
+    }
+
+    public function setPhotoPath(?string $photo_path): self
+    {
+        $this->photo_path = $photo_path;
 
         return $this;
     }

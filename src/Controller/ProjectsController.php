@@ -88,7 +88,6 @@ class ProjectsController extends AbstractController
                     $pictureFileName->move('download/', $newFileNamePhoto);
 
                     $project->setPhotoPath($newFileNamePhoto);
-                    $project->setIsPublic(0);
                     $project->setModificatedAt(new \DateTime());
                     $em->persist($project);
                     $em->flush();
@@ -113,10 +112,15 @@ class ProjectsController extends AbstractController
      */
     public function delete($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $project = $em->getRepository(Projects::class)->find($id);
-        $em->remove($project);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $project = $em->getRepository(Projects::class)->find($id);
+            $em->remove($project);
+            $em->flush();
+            $this->addFlash('success', 'Usunięto projekt');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
+        }
         return $this->redirectToRoute('admin_projects');
     }
 
@@ -125,12 +129,17 @@ class ProjectsController extends AbstractController
      */
     public function makeVisible($id, $visibility)
     {
-        $em = $this->getDoctrine()->getManager();
-        $project = $em->getRepository(Projects::class)->find($id);
-        $project->setModificatedAt(new \DateTime());
-        $project->setIsPublic($visibility);
-        $em->persist($project);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $project = $em->getRepository(Projects::class)->find($id);
+            $project->setModificatedAt(new \DateTime());
+            $project->setIsPublic($visibility);
+            $em->persist($project);
+            $em->flush();
+            $this->addFlash('success', 'Zaktulizowano widoczność');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
         return $this->redirectToRoute('admin_projects');
     }
 }

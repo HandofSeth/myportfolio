@@ -8,8 +8,13 @@
 
 	<div class="card-header">
 		<i class="fas fa-table mr-1"></i>
-		Tabelka Liczby Podsumowujace
-		<a class="btn btn-info float-right" href="{{ path('admin_summary_numbers_new') }}">Dodaj Liczbę</a>
+		Tabelka Liczby Podsumowujące
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-info float-right" href="{{ path('admin_summary_numbers_new') }}">Dodaj liczbę</a>
+		{% else %}
+			<a class="btn btn-secondary float-right" href="#" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Dodaj liczbę</a>
+		{% endif %}
+
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
@@ -41,22 +46,37 @@
 						<tr>
 							<td>{{ summaryNumber.name }}</td>
 							<td>{{ summaryNumber.numbers }}</td>
-							<td>{{ summaryNumber.uploadedAt|date('d.m.Y h:m:s') }}</td>
-							<td>{{ summaryNumber.modificatedAt|date('d.m.Y h:m:s') }}</td>
+							<td>{{ summaryNumber.uploadedAt|date('d.m.Y H:i:s') }}</td>
+							<td>{{ summaryNumber.modificatedAt|date('d.m.Y H:i:s') }}</td>
+							{% if is_granted('ROLE_ADMIN') %}
+								<td>
+									<a href="{{ path('admin_summary_numbers_edit' , { 'id': summaryNumber.id }) }}" class="btn btn-success">Edycja</a>
+								</td>
+								<td>
+									<a href="{{ path('admin_summary_numbers_delete' , { 'id': summaryNumber.id }) }}" class="btn btn-danger">Usuń</a>
+								</td>
+								<td>
+									{% if summaryNumber.isPublic == '1' %}
+										<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '0'}) }}'"></td>
+								{% else %}
+									<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '1'}) }}'"></td>
+							{% endif %}
+						{% else %}
 							<td>
-								<a href="{{ path('admin_summary_numbers_edit' , { 'id': summaryNumber.id }) }}" class="btn btn-success">Edycja</a>
+								<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Edycja</a>
 							</td>
 							<td>
-								<a href="{{ path('admin_summary_numbers_delete' , { 'id': summaryNumber.id }) }}" class="btn btn-danger">Usuń</a>
+								<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Usuń</a>
 							</td>
 							<td>
 								{% if summaryNumber.isPublic == '1' %}
-									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '0'}) }}'"></td>
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
 							{% else %}
-								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_summary_numbers_set_visibility' , { 'id': summaryNumber.id , 'visibility' : '1'}) }}'"></td>
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
 						{% endif %}
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	{% endblock %}
+					{% endif %}
+				</tbody>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endblock %}

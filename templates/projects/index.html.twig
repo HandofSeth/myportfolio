@@ -8,7 +8,11 @@
 	<div class="card-header">
 		<i class="fas fa-table mr-1"></i>
 		Tabelka Projekty
-		<a class="btn btn-info float-right" href="{{ path('admin_projects_new') }}">Dodaj Projekt</a>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-info float-right" href="{{ path('admin_projects_new') }}">Dodaj projekt</a>
+		{% else %}
+			<a class="btn btn-secondary float-right" href="#" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Dodaj projekt</a>
+		{% endif %}
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
@@ -42,25 +46,42 @@
 					{% for project in projectsData %}
 						<tr>
 							<td>{{ project.name }}</td>
-							<td><a href="{{ project.pagePath }}">{{ project.pagePath }}</a></td>
+							<td>
+								<a href="{{ project.pagePath }}">{{ project.pagePath }}</a>
+							</td>
 							<td>{{ project.description }}</td>
-							<td><img src="{{ asset('download/')}}{{ project.photoPath }}" class="img-fluid img-thumbnail"></td>							
-							<td>{{ project.uploadedAt|date('d.m.Y h:m:s') }}</td>
-							<td>{{ project.modificatedAt|date('d.m.Y h:m:s') }}</td>							
+							<td><img src="{{ asset('download/')}}{{ project.photoPath }}" class="img-fluid img-thumbnail"></td>
+							<td>{{ project.uploadedAt|date('d.m.Y H:i:s') }}</td>
+							<td>{{ project.modificatedAt|date('d.m.Y H:i:s') }}</td>
+							{% if is_granted('ROLE_ADMIN') %}
+								<td>
+									<a href="{{ path('admin_projects_edit' , { 'id': project.id }) }}" class="btn btn-success">Edycja</a>
+								</td>
+								<td>
+									<a href="{{ path('admin_projects_delete' , { 'id': project.id }) }}" class="btn btn-danger">Usuń</a>
+								</td>
+								<td>
+									{% if project.isPublic == '1' %}
+										<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '0'}) }}'"></td>
+								{% else %}
+									<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '1'}) }}'"></td>
+							{% endif %}
+						{% else %}
 							<td>
-								<a href="{{ path('admin_projects_edit' , { 'id': project.id }) }}" class="btn btn-success">Edycja</a>
+								<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Edycja</a>
 							</td>
 							<td>
-								<a href="{{ path('admin_projects_delete' , { 'id': project.id }) }}" class="btn btn-danger">Usuń</a>
+								<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Usuń</a>
 							</td>
 							<td>
-							{% if project.isPublic == '1' %}
-									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '0'}) }}'"></td>
+								{% if project.isPublic == '1' %}
+									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
 							{% else %}
-								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_projects_set_visibility' , { 'id': project.id , 'visibility' : '1'}) }}'"></td>
+								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
 						{% endif %}
-						</tr>
-					{% endfor %}
+					{% endif %}
 				</tbody>
-			</table>
-		{% endblock %}
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endblock %}

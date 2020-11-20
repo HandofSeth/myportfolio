@@ -21,7 +21,7 @@
 									{% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
 									{{ form_start(registrationForm) }}
 									{{ form_row(registrationForm.username) }}
-
+									{{ form_row(registrationForm.roles) }}
 									{{ form_row(registrationForm.plainPassword) }}
 
 									{{ form_row(registrationForm.agreeTerms) }}
@@ -36,6 +36,5 @@
 				</div>
 			</main>
 		</div>
-
 	</div>
 {% endblock %}

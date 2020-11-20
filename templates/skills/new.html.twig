@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block body %}
-<div class="card-body">
-	SEKCJA Umiejętności
-	{% form_theme skillsForm 'bootstrap_4_layout.html.twig' %}
-	{{ form_start(skillsForm) }}
-	{{ form_row(skillsForm.name) }}
-	{{ form_row(skillsForm.percent) }}
+	<div class="card-body">
+		SEKCJA Umiejętności
+		{% form_theme skillsForm 'bootstrap_4_layout.html.twig' %}
+		{{ form_start(skillsForm) }}
+		{{ form_row(skillsForm.name) }}
+		{{ form_row(skillsForm.percent) }}
 
 
-	<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
-	{{ form_end(skillsForm) }}
-</div>
+		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_end(skillsForm) }}
+	</div>
 {% endblock %}

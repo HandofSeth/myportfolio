@@ -17,7 +17,8 @@ class TechnologiesType extends AbstractType
             ->add('name', TextType::class, [])
             ->add('image_path', FileType::class, [
                 'data_class' => null,
-                'label' => 'Zdjęcie',
+                'required' => is_null($builder->getData()->getId()),
+                'label' => 'Obrazek',
                 'constraints' => [
                     'maxSize' => '5M',
                     'mimeTypes' => [
@@ -26,7 +27,6 @@ class TechnologiesType extends AbstractType
                     'mimeTypesMessage' => 'Obsługiwany format pliku musi być obrazem'
                 ]
             ]);
-          
     }
 
     public function configureOptions(OptionsResolver $resolver)

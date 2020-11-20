@@ -174,7 +174,7 @@ class About
         return $this->fileNamePhoto;
     }
 
-    public function setFileNamePhoto(string $fileNamePhoto): self
+    public function setFileNamePhoto(?string $fileNamePhoto): self
     {
         $this->fileNamePhoto = $fileNamePhoto;
 
@@ -186,7 +186,7 @@ class About
         return $this->fileNameCv;
     }
 
-    public function setFileNameCv(string $fileNameCv): self
+    public function setFileNameCv(?string $fileNameCv): self
     {
         $this->fileNameCv = $fileNameCv;
 

@@ -36,12 +36,17 @@ class SkillsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $newSkill->setIsPublic(0);
-            $newSkill->setUploadedAt(new \DateTime());
-            $newSkill->setModificatedAt(new \DateTime());
-            $em->persist($newSkill);
-            $em->flush();
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $newSkill->setIsPublic(0);
+                $newSkill->setUploadedAt(new \DateTime());
+                $newSkill->setModificatedAt(new \DateTime());
+                $em->persist($newSkill);
+                $em->flush();
+                $this->addFlash('success', 'Dodano umiejętność');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+            }
             return $this->redirectToRoute('admin_skills');
         }
 
@@ -63,9 +68,14 @@ class SkillsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $skill->setModificatedAt(new \DateTime());
-            $em->persist($skill);
-            $em->flush();
+            try {
+                $skill->setModificatedAt(new \DateTime());
+                $em->persist($skill);
+                $em->flush();
+                $this->addFlash('success', 'Zaktualizowano umiejętność');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+            }
             return $this->redirectToRoute('admin_skills');
         }
 
@@ -80,10 +90,15 @@ class SkillsController extends AbstractController
      */
     public function delete($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $skill = $em->getRepository(Skills::class)->find($id);
-        $em->remove($skill);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $skill = $em->getRepository(Skills::class)->find($id);
+            $em->remove($skill);
+            $em->flush();
+            $this->addFlash('success', 'Usunięto umiejętność');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
+        }
         return $this->redirectToRoute('admin_skills');
     }
 
@@ -92,12 +107,17 @@ class SkillsController extends AbstractController
      */
     public function makeVisible($id, $visibility)
     {
-        $em = $this->getDoctrine()->getManager();
-        $skill = $em->getRepository(Skills::class)->find($id);
-        $skill->setModificatedAt(new \DateTime());
-        $skill->setIsPublic($visibility);
-        $em->persist($skill);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $skill = $em->getRepository(Skills::class)->find($id);
+            $skill->setModificatedAt(new \DateTime());
+            $skill->setIsPublic($visibility);
+            $em->persist($skill);
+            $em->flush();
+            $this->addFlash('success', 'Zaktulizowano widoczność');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
         return $this->redirectToRoute('admin_skills');
     }
 }

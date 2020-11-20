@@ -28,8 +28,9 @@ class AboutType extends AbstractType
             ->add('phone', TelType::class, [])
             ->add('projects', NumberType::class, [])
             ->add('fileNamePhoto', FileType::class, [
+                'data_class' => null,
+                'required' => is_null($builder->getData()->getId()),
                 'multiple' => false,
-                'mapped' => false,
                 'label' => 'Zdjęcie główne',
                 'constraints' => [
                     'maxSize' => '5M',
@@ -40,8 +41,9 @@ class AboutType extends AbstractType
                 ]
             ])
             ->add('fileNameCv', FileType::class, [
-                'multiple' => true,
-                'mapped' => false,
+                'data_class' => null,
+                'required' => is_null($builder->getData()->getId()),
+                'multiple' => false,
                 'label' => 'CV',
                 'constraints' => [
                     'maxSize' => '5M',

@@ -8,7 +8,11 @@
 	<div class="card-header">
 		<i class="fas fa-table mr-1"></i>
 		Tabelka Technologie
-		<a class="btn btn-info float-right" href="{{ path('admin_technologies_new') }}">Dodaj Technologie</a>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-info float-right" href="{{ path('admin_technologies_new') }}">Dodaj technologie</a>
+		{% else %}
+			<a class="btn btn-secondary float-right" href="#" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Dodaj technologie</a>
+		{% endif %}
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
@@ -40,19 +44,34 @@
 						<tr>
 							<td>{{ technology.name }}</td>
 							<td><img src="{{ asset('download/')}}{{ technology.imagePath }}" class="img-fluid img-thumbnail"></td>
-							<td>{{ technology.uploadedAt|date('d.m.Y h:m:s') }}</td>
-							<td>{{ technology.modificatedAt|date('d.m.Y h:m:s') }}</td>
-							<td>
-								<a href="{{ path('admin_technologies_edit' , { 'id': technology.id }) }}" class="btn btn-success">Edycja</a>
-							</td>
-							<td>
-								<a href="{{ path('admin_technologies_delete' , { 'id': technology.id }) }}" class="btn btn-danger">Usuń</a>
-							</td>
-							<td>
-								{% if technology.isPublic == '1' %}
-									<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '0'}) }}'"></td>
+							<td>{{ technology.uploadedAt|date('d.m.Y H:i:s') }}</td>
+							<td>{{ technology.modificatedAt|date('d.m.Y H:i:s') }}</td>
+							{% if is_granted('ROLE_ADMIN') %}
+								<td>
+									<a href="{{ path('admin_technologies_edit' , { 'id': technology.id }) }}" class="btn btn-success">Edycja</a>
+								</td>
+								<td>
+									<a href="{{ path('admin_technologies_delete' , { 'id': technology.id }) }}" class="btn btn-danger">Usuń</a>
+								</td>
+								<td>
+									{% if technology.isPublic == '1' %}
+										<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '0'}) }}'"></td>
+								{% else %}
+									<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '1'}) }}'"></td>
+							{% endif %}
 							{% else %}
-								<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('admin_technologies_set_visibility' , { 'id': technology.id , 'visibility' : '1'}) }}'"></td>
+							<td>
+									<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Edycja</a>
+								</td>
+								<td>
+									<a href="#" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Usuń</a>
+								</td>
+								<td>
+									{% if technology.isPublic == '1' %}
+										<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
+								{% else %}
+									<input type="checkbox" data-toggle="toggle" data-onstyle="outline-secondary" data-offstyle="outline-secondary"></td>
+							{% endif %}
 						{% endif %}
 					</tr>
 				{% endfor %}

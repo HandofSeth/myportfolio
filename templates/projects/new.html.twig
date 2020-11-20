@@ -1,21 +1,24 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}{{ parent() }}Nowe Umiejetności
+{% block title %}
+	{{ parent() }}Nowe Umiejetności
 {% endblock %}
 
 {% block body %}
-<div class="card-body">
-    SEKCJA Umiejętności
-    {% form_theme projectsForm 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(projectsForm) }}
-    {{ form_row(projectsForm.name) }}
-    {{ form_row(projectsForm.page_path) }}
-    {{ form_row(projectsForm.description) }}
-    <img style='width: 440px' src="{{ asset('download/')}}{{ projectsForm.photo_path.vars.data }}">
-    {{ form_row(projectsForm.photo_path) }}
+	<div class="card-body">
+		SEKCJA Umiejętności
+		{% form_theme projectsForm 'bootstrap_4_layout.html.twig' %}
+		{{ form_start(projectsForm) }}
+		{{ form_row(projectsForm.name) }}
+		{{ form_row(projectsForm.page_path) }}
+		{{ form_row(projectsForm.description) }}
+		{% if projectsForm.photo_path.vars.data != NULL %}
+			<img style='width: 440px' src="{{ asset('download/')}}{{ projectsForm.photo_path.vars.data }}">
+		{% endif %}
+		{{ form_row(projectsForm.photo_path) }}
 
 
-    <button type="submit" class="btn btn-primary mb-5">Zapisz</button>
-    {{ form_end(projectsForm) }}
-</div>
+		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_end(projectsForm) }}
+	</div>
 {% endblock %}

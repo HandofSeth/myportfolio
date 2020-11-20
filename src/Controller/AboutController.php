@@ -41,7 +41,7 @@ class AboutController extends AbstractController
                     $em->flush();
                     $this->addFlash('success', 'Dodano zdjęcie');
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd zdjęcia');
                 }
             }
 
@@ -56,9 +56,9 @@ class AboutController extends AbstractController
                     $aboutData->setFileNameCv($newFileNameCv);
                     $em->persist($aboutData);
                     $em->flush();
-                    $this->addFlash('success', 'Dodano zdjęcie');
+                    $this->addFlash('success', 'Dodano CV');
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd CV');
                 }
             }
         }
