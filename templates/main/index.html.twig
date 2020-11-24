@@ -84,7 +84,7 @@
 						<h1 class="big">About</h1>
 						<h2 class="mb-4">O mnie</h2>
 						<p>{{aboutData.description}}</p>
-						<ul class="about-info mt-4 px-md-0 px-2">
+						<ul class="about-info mt-5 px-md-0 px-3">
 							<li class="d-flex">
 								<span>Imię:</span>
 								<span>{{aboutData.name}}</span>
@@ -209,50 +209,64 @@
 	<div class="col-md-7 heading-section text-center ftco-animate">
 		<h1 class="big big-2">Contact</h1>
 		<h2 class="mb-4">Kontakt</h2>
-		<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
 	</div>
 </div></div><div class="row no-gutters block-9">
-<div class="col-md-6 order-md-last d-flex">
-	<form action="#" class="bg-light p-4 p-md-5 contact-form">
-		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Twoje imię">
-		</div>
-		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Twój Email">
-		</div>
-		<div class="form-group">
-			<input type="text" class="form-control" placeholder="Temat">
-		</div>
-		<div class="form-group">
-			<textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Wiadomość"></textarea>
-		</div>
-		<div class="form-group">
-			<input type="submit" value="Wyślij Wiadomość" class="btn btn-primary py-3 px-5">
-		</div>
-	</form>
+<div class="col-md-12 order-md-last d-flex">
+	<div class="bg-light p-4 p-md-5 contact-form">
+		{% for message in app.flashes('success')%}
+			<div class='alert alert-success'>
+				{{ message }}
+			</div>
+		{% endfor %}
 
+		{% for message in app.flashes('error')%}
+			<div class='alert alert-danger'>
+				{{ message }}
+			</div>
+		{% endfor %}
+		{% form_theme contactForm 'bootstrap_4_layout.html.twig' %}
+		{{ form_start(contactForm) }}
+		<div class="form-group">
+			{{ form_row(contactForm.name, {'attr': {'class': 'form-control' , 'placeholder' : 'Imię i nazwisko'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_row(contactForm.email, {'attr': {'class': 'form-control' , 'placeholder' : 'Email'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_row(contactForm.subject, {'attr': {'class': 'form-control' , 'placeholder' : 'Temat'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_row(contactForm.body, {'attr': {'class': 'form-control' , 'placeholder' : 'Wiadomość'}}) }}
+		</div>
+		<div class="form-group">
+			{{ form_row(contactForm.save, {'attr': {'class': 'btn btn-primary py-3 px-5' , 'value' : 'Wyślij Wiadomość'}}) }}
+		</div>
+		{{ form_end(contactForm) }}
+	</div>
 </div>
-
-<div class="col-md-6 d-flex">
-	<div class="img" style="background-image: url({{ asset('download/')}}{{ aboutData.fileNamePhoto }});"></div>
-</div></div></div></section><footer class="ftco-footer ftco-section"><div class="container"><div class="row mb-5">
+</div></div></section><footer class="ftco-footer ftco-section"><div class="container"><div class="row mb-5">
 <div class="col-md">
 	<div class="ftco-footer-widget mb-4">
-		<h2 class="ftco-heading-2">About</h2>
-		<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+		<h2 class="ftco-heading-2">O mnie</h2>
+		<p>{{aboutData.description}}</p>
 		<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
 			<li class="ftco-animate">
-				<a href="#">
-					<span class="icon-twitter"></span>
+				<a href="https://github.com/piotrzakrzewski89" target="_blank">
+					<span class="icon-github"></span>
 				</a>
 			</li>
 			<li class="ftco-animate">
-				<a href="#">
+				<a href="https://www.youtube.com/channel/UCxrlXM7iknSpaVPliiZHaWw" target="_blank">
+					<span class="icon-youtube"></span>
+				</a>
+			</li>
+			<li class="ftco-animate">
+				<a href="https://www.facebook.com/piotrzakrzewski89" target="_blank">
 					<span class="icon-facebook"></span>
 				</a>
 			</li>
 			<li class="ftco-animate">
-				<a href="#">
+				<a href="https://www.instagram.com/piotrzakrzewski89/" target="_blank">
 					<span class="icon-instagram"></span>
 				</a>
 			</li>
@@ -261,77 +275,46 @@
 </div>
 <div class="col-md">
 	<div class="ftco-footer-widget mb-4 ml-md-4">
-		<h2 class="ftco-heading-2">Links</h2>
+		<h2 class="ftco-heading-2">Linki</h2>
 		<ul class="list-unstyled">
 			<li>
 				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Home</a>
+					<span class="icon-long-arrow-right mr-2"></span>Główna</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>About</a>
+				<a href="#about-section">
+					<span class="icon-long-arrow-right mr-2"></span>O mnie</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Services</a>
+				<a href="#projects-section">
+					<span class="icon-long-arrow-right mr-2"></span>Projekty</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Projects</a>
-			</li>
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Contact</a>
+				<a href="#contact-section">
+					<span class="icon-long-arrow-right mr-2"></span>Kontakt</a>
 			</li>
 		</ul>
 	</div>
 </div>
 <div class="col-md">
 	<div class="ftco-footer-widget mb-4">
-		<h2 class="ftco-heading-2">Services</h2>
-		<ul class="list-unstyled">
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Web Design</a>
-			</li>
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Web Development</a>
-			</li>
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Business Strategy</a>
-			</li>
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Data Analysis</a>
-			</li>
-			<li>
-				<a href="#">
-					<span class="icon-long-arrow-right mr-2"></span>Graphic Design</a>
-			</li>
-		</ul>
-	</div>
-</div>
-<div class="col-md">
-	<div class="ftco-footer-widget mb-4">
-		<h2 class="ftco-heading-2">Have a Questions?</h2>
+		<h2 class="ftco-heading-2">Masz pytania ?</h2>
 		<div class="block-23 mb-3">
 			<ul>
 				<li>
 					<span class="icon icon-map-marker"></span>
-					<span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span>
+					<span class="text">{{aboutData.address}}</span>
 				</li>
 				<li>
 					<a href="#">
 						<span class="icon icon-phone"></span>
-						<span class="text">+2 392 3929 210</span>
+						<span class="text">{{aboutData.phone}}</span>
 					</a>
 				</li>
 				<li>
 					<a href="#">
 						<span class="icon icon-envelope"></span>
-						<span class="text">info@yourdomain.com</span>
+						<span class="text">{{aboutData.email}}</span>
 					</a>
 				</li>
 			</ul>
@@ -339,20 +322,7 @@
 	</div>
 </div></div><div class="row">
 <div class="col-md-12 text-center">
-
 	<p>
-		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-		Copyright &copy;<script>
-			document.write(new Date().getFullYear());
-		</script>
-		All rights reserved | This template is made with
-		<i class="icon-heart color-danger" aria-hidden="true"></i>
-		by
-		<a href="https://colorlib.com" target="_blank">Colorlib</a>
-		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+		Copyright &copy; 2020 All rights reserved by Piotr Zakrzewski
 	</p>
-</div></div></div></footer><!-- loader 
-										<div id="ftco-loader" class="show fullscreen">
-											<svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg>
-										</div>
-										-->{% endblock %}
+</div></div></div></footer>{% endblock %}

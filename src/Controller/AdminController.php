@@ -14,7 +14,10 @@ class AdminController extends AbstractController
      */
     public function index()
     {
+        $phpversion = phpversion();
+
         return $this->render('admin/index.html.twig', [
+            'phpversion' => $phpversion,
             'controller_name' => 'AdminController',
         ]);
     }
