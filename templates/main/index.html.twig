@@ -124,16 +124,17 @@
 
 <section class="ftco-section ftco-partner">
 	<div class="container">
-		<div class="row slider">
-			{% for technology in technologiesData %}
-				<div class="col-sm">
-					<a href="#" class="partner"><img src="{{ asset('download/')}}{{ technology.imagePath }}" class="img-fluid"></a>
-				</div>
-			{% endfor %}
+		<div class="row">
+			<div class="owl-carousel">
+				{% for technology in technologiesData %}
+					<div class="col-sm">
+						<img src="{{ asset('download/')}}{{ technology.imagePath }}" class="img-fluid">
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 	</div>
 </section>
-
 <section class="ftco-section ftco-no-pb goto-here" id="resume-section">
 	<div class="container">
 		<div class="col-md-9">

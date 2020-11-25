@@ -26,8 +26,8 @@ class Technologies
      * @ORM\Column(type="string", length=255)
      * @Assert\File(
      *     maxSize = "1024k",
-     *     mimeTypes = {"image/jpeg"},
-     *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG"
+     *     mimeTypes = {"image/jpeg","image/png"},
+     *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG lub PNG"
      * )
      */
     private $image_path;

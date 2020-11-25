@@ -22,6 +22,8 @@ class AboutController extends AbstractController
         $aboutData = $em->getRepository(About::class)->find(1);
         if ($aboutData == Null) {
             $aboutData = new About();
+            $oldFilePathCV = Null;
+            $oldFilePathPhoto = Null;
         } else {
             $oldFilePathCV = $aboutData->getFileNameCv();
             $oldFilePathPhoto = $aboutData->getFileNamePhoto();
@@ -34,6 +36,7 @@ class AboutController extends AbstractController
             $pictureFileName = $form->get('fileNamePhoto')->getData();
             $cvFileName = $form->get('fileNameCv')->getData();
             if ($pictureFileName || $cvFileName) {
+
                 try {
                     if ($aboutData == Null) {
                         $newFileNameCv = $imageUploadService->uploadNewImage($cvFileName);
@@ -42,6 +45,7 @@ class AboutController extends AbstractController
                         $newFileNameCv = $imageUploadService->uploadEditImage($cvFileName, $oldFilePathCV);
                         $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePathPhoto);
                     }
+
                     $aboutData->setFileNameCv($newFileNameCv);
                     $aboutData->setFileNamePhoto($newFileNamePhoto);
                     $em->persist($aboutData);

@@ -61,7 +61,7 @@ class About
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\File(
-     *     maxSize = "1024k",
+     *     maxSize = "5M",
      *     mimeTypes = {"image/jpeg"},
      *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG"
      * )

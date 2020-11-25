@@ -25,9 +25,8 @@
 			<link rel="stylesheet" href="{{ asset('assets/css/icomoon.css')}}">
 			<link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
 
-			<link rel="stylesheet" href="{{ asset('assets/slick/slick.scss')}}">
-			<link rel="stylesheet" href="{{ asset('assets/slick/slick-theme.scss')}}">
-
+			<link rel="stylesheet" href="{{ asset('assets/owlcarousel/owl.carousel.min.css')}}">
+			<link rel="stylesheet" href="{{ asset('assets/owlcarousel/owl.theme.default.min.css')}}">
 
 		{% endblock %}
 	</head>
@@ -47,15 +46,16 @@
 			<script src="{{ asset('assets/js/jquery.animateNumber.min.js')}}"></script>
 			<script src="{{ asset('assets/js/scrollax.min.js')}}"></script>
 			<script src="{{ asset('assets/js/main.js')}}"></script>
-			<script src="{{ asset('assets/slick/slick.min.js')}}"></script>
-
+			<script src="{{ asset('assets/owlcarousel/owl.carousel.min.js')}}"></script>
 			<script type="text/javascript">
-				$(".slider").slick({
-infinite: true,
-slidesToShow: 4,
-slidesToScroll: 1,
+				var owl = $('.owl-carousel');
+owl.owlCarousel({
+items: 4,
+loop: true,
+margin: 10,
 autoplay: true,
-autoplaySpeed: 1000
+autoplayTimeout: 3000,
+autoplayHoverPause: true
 });
 			</script>
 		{% endblock %}
