@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AboutRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AboutRepository::class)
@@ -59,11 +60,21 @@ class About
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg"},
+     *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG"
+     * )
      */
     private $fileNamePhoto;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"application/pdf", "application/x-pdf"},
+     *     mimeTypesMessage = "Proszę załaduj plik w formacje PDF"
+     * )
      */
     private $fileNameCv;
 
@@ -192,5 +203,4 @@ class About
 
         return $this;
     }
-
 }

@@ -7,6 +7,8 @@ use App\Form\ProjectsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use App\Service\ImagesUploadService;
 
 class ProjectsController extends AbstractController
 {
@@ -29,7 +31,7 @@ class ProjectsController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request)
+    public function new(Request $request,  ImagesUploadService $imageUploadService)
     {
         $newProjects = new Projects();
         $form = $this->createForm(ProjectsType::class, $newProjects);
@@ -41,11 +43,7 @@ class ProjectsController extends AbstractController
             $pictureFileName = $form->get('photo_path')->getData();
             if ($pictureFileName) {
                 try {
-                    $oryginalFileName = pathinfo($pictureFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNamePhoto = $safeFileName . '-' . uniqid() . '.' . $pictureFileName->guessExtension();
-                    $pictureFileName->move('download/', $newFileNamePhoto);
-
+                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
                     $newProjects->setPhotoPath($newFileNamePhoto);
                     $newProjects->setIsPublic(0);
                     $newProjects->setUploadedAt(new \DateTime());
@@ -71,21 +69,19 @@ class ProjectsController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id, ImagesUploadService $imageUploadService)
     {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository(Projects::class)->find($id);
         $form = $this->createForm(ProjectsType::class, $project);
+        $oldFilePath = $project->getPhotoPath();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('photo_path')->getData();
             if ($pictureFileName) {
                 try {
-                    $oryginalFileName = pathinfo($pictureFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNamePhoto = $safeFileName . '-' . uniqid() . '.' . $pictureFileName->guessExtension();
-                    $pictureFileName->move('download/', $newFileNamePhoto);
+                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
 
                     $project->setPhotoPath($newFileNamePhoto);
                     $project->setModificatedAt(new \DateTime());
@@ -112,9 +108,11 @@ class ProjectsController extends AbstractController
      */
     public function delete($id)
     {
+        $filesystem = new Filesystem();
         try {
             $em = $this->getDoctrine()->getManager();
             $project = $em->getRepository(Projects::class)->find($id);
+            $filesystem->remove(['download/' . $project->getPhotoPath()]);
             $em->remove($project);
             $em->flush();
             $this->addFlash('success', 'Usunięto projekt');

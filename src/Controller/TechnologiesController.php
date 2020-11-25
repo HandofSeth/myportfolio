@@ -7,6 +7,8 @@ use App\Form\TechnologiesType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use App\Service\ImagesUploadService;
 
 class TechnologiesController extends AbstractController
 {
@@ -29,7 +31,7 @@ class TechnologiesController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request)
+    public function new(Request $request, ImagesUploadService $imageUploadService)
     {
         $newTechnologies = new Technologies();
         $form = $this->createForm(TechnologiesType::class, $newTechnologies);
@@ -39,11 +41,7 @@ class TechnologiesController extends AbstractController
             $pictureFileName = $form->get('image_path')->getData();
             if ($pictureFileName) {
                 try {
-                    $oryginalFileName = pathinfo($pictureFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNamePhoto = $safeFileName . '-' . uniqid() . '.' . $pictureFileName->guessExtension();
-                    $pictureFileName->move('download/', $newFileNamePhoto);
-
+                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
                     $newTechnologies->setImagePath($newFileNamePhoto);
                     $em = $this->getDoctrine()->getManager();
                     $newTechnologies->setIsPublic(0);
@@ -71,22 +69,19 @@ class TechnologiesController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id, ImagesUploadService $imageUploadService)
     {
         $em = $this->getDoctrine()->getManager();
         $technologies = $em->getRepository(Technologies::class)->find($id);
         $form = $this->createForm(TechnologiesType::class, $technologies);
+        $oldFilePath = $technologies->getImagePath();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('image_path')->getData();
             if ($pictureFileName) {
                 try {
-                    $oryginalFileName = pathinfo($pictureFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNamePhoto = $safeFileName . '-' . uniqid() . '.' . $pictureFileName->guessExtension();
-                    $pictureFileName->move('download/', $newFileNamePhoto);
-
+                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
                     $technologies->setImagePath($newFileNamePhoto);
                     $technologies->setModificatedAt(new \DateTime());
                     $em->persist($technologies);
@@ -110,9 +105,11 @@ class TechnologiesController extends AbstractController
      */
     public function delete($id)
     {
+        $filesystem = new Filesystem();
         try {
             $em = $this->getDoctrine()->getManager();
             $technologies = $em->getRepository(Technologies::class)->find($id);
+            $filesystem->remove(['download/' . $technologies->getImagePath()]);
             $em->remove($technologies);
             $em->flush();
             $this->addFlash('success', 'Usunięto Technologie');

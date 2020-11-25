@@ -8,50 +8,38 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AboutType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rotate', TextType::class, [])
-            ->add('description', TextType::class, [])
-            ->add('name', TextType::class, [])
-            ->add('birth', BirthdayType::class, ['format' => 'dd-MM-yyyy'])
-            ->add('address', TextType::class, [])
-            ->add('email', EmailType::class, [])
-            ->add('phone', TelType::class, [])
-            ->add('projects', NumberType::class, [])
+            ->add('rotate', TextType::class, ['label' => 'Elemet Rotate'])
+            ->add('description', TextType::class, ['label' => 'Opis'])
+            ->add('name', TextType::class, ['label' => 'Imię i nazwisko'])
+            ->add('birth', BirthdayType::class, ['format' => 'dd-MM-yyyy', 'label' => 'Data urodzin'])
+            ->add('address', TextType::class, ['label' => 'Adres'])
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('phone', TelType::class, ['label' => 'Nr telefonu'])
+            ->add('projects', NumberType::class, ['label' => 'Liczna projektów'])
             ->add('fileNamePhoto', FileType::class, [
                 'data_class' => null,
                 'required' => is_null($builder->getData()->getId()),
                 'multiple' => false,
-                'label' => 'Zdjęcie główne',
-                'constraints' => [
-                    'maxSize' => '5M',
-                    'mimeTypes' => [
-                        'image/*'
-                    ],
-                    'mimeTypesMessage' => 'Obsługiwany format pliku musi być obrazem'
-                ]
+                'label' => 'Zdjęcie główne'
             ])
             ->add('fileNameCv', FileType::class, [
                 'data_class' => null,
                 'required' => is_null($builder->getData()->getId()),
                 'multiple' => false,
-                'label' => 'CV',
-                'constraints' => [
-                    'maxSize' => '5M',
-                    'mimeTypes' => [
-                        'application/pdf'
-                    ],
-                    'mimeTypesMessage' => 'Obsługiwany format pliku musi być pdf'
-                ]
+                'label' => 'CV'
+            ])->add('submit', SubmitType::class, [
+                'label' => 'Zapisz'
             ]);
     }
 

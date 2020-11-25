@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProjectsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectsRepository::class)
@@ -34,6 +35,11 @@ class Projects
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg"},
+     *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG"
+     * )
      */
     private $photo_path;
 

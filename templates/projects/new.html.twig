@@ -16,9 +16,7 @@
 			<img style='width: 440px' src="{{ asset('download/')}}{{ projectsForm.photo_path.vars.data }}">
 		{% endif %}
 		{{ form_row(projectsForm.photo_path) }}
-
-
-		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_row(projectsForm.submit) }}
 		{{ form_end(projectsForm) }}
 	</div>
 {% endblock %}

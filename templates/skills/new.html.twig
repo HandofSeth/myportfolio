@@ -11,9 +11,7 @@
 		{{ form_start(skillsForm) }}
 		{{ form_row(skillsForm.name) }}
 		{{ form_row(skillsForm.percent) }}
-
-
-		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_row(skillsForm.submit) }}
 		{{ form_end(skillsForm) }}
 	</div>
 {% endblock %}

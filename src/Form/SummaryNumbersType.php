@@ -8,14 +8,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SummaryNumbersType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [])
-            ->add('numbers', NumberType::class, []);
+            ->add('name', TextType::class, ['label' => 'Nazwa'])
+            ->add('numbers', NumberType::class, ['label' => 'Liczba'])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Zapisz'
+            ]);
           
     }
 

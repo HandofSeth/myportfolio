@@ -8,28 +8,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ProjectsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [])
-            ->add('page_path', TextType::class, [])
-            ->add('description', TextType::class, [])
+            ->add('name', TextType::class, ['label' => 'Nazwa'])
+            ->add('page_path', TextType::class, ['label' => 'Adres strony'])
+            ->add('description', TextType::class, ['label' => 'Opis'])
             ->add('photo_path', FileType::class, [
                 'data_class' => null,
                 'required' => is_null($builder->getData()->getId()),
                 'label' => 'Zdjęcie',
-                'constraints' => [
-                    'maxSize' => '5M',
-                    'mimeTypes' => [
-                        'image/*'
-                    ],
-                    'mimeTypesMessage' => 'Obsługiwany format pliku musi być obrazem'
-                ]
+            ])->add('submit', SubmitType::class, [
+                'label' => 'Zapisz'
             ]);
-          
     }
 
     public function configureOptions(OptionsResolver $resolver)

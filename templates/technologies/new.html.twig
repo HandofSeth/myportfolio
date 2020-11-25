@@ -14,9 +14,7 @@
 			<img style='width: 440px' src="{{ asset('download/')}}{{ technologiesForm.image_path.vars.data }}">
 		{% endif %}
 		{{ form_row(technologiesForm.image_path) }}
-
-
-		<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+		{{ form_row(technologiesForm.submit) }}
 		{{ form_end(technologiesForm) }}
 	</div>
 {% endblock %}

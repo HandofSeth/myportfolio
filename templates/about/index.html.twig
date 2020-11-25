@@ -31,7 +31,7 @@
 		{{ form_row(aboutForm.fileNameCv) }}
 
 		{% if is_granted('ROLE_ADMIN') %}
-			<button type="submit" class="btn btn-primary mb-5">Zapisz</button>
+			{{ form_row(aboutForm.submit) }}
 		{% else %}
 			<a class="btn btn-secondary mb-5" href="#" data-toggle="tooltip" data-html="true" title="<b>UWAGA</b><br>Opcja niedostępna dla gościa">Zapisz</a>
 		{% endif %}

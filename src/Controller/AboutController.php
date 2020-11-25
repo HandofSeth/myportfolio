@@ -7,6 +7,7 @@ use App\Form\AboutType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\ImagesUploadService;
 
 class AboutController extends AbstractController
 {
@@ -15,13 +16,15 @@ class AboutController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, ImagesUploadService $imageUploadService)
     {
-
         $em = $this->getDoctrine()->getManager();
         $aboutData = $em->getRepository(About::class)->find(1);
         if ($aboutData == Null) {
             $aboutData = new About();
+        } else {
+            $oldFilePathCV = $aboutData->getFileNameCv();
+            $oldFilePathPhoto = $aboutData->getFileNamePhoto();
         }
         $form = $this->createForm(AboutType::class, $aboutData);
 
@@ -29,40 +32,26 @@ class AboutController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $pictureFileName = $form->get('fileNamePhoto')->getData();
-            if ($pictureFileName) {
+            $cvFileName = $form->get('fileNameCv')->getData();
+            if ($pictureFileName || $cvFileName) {
                 try {
-                    $oryginalFileName = pathinfo($pictureFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNamePhoto = $safeFileName . '-' . uniqid() . '.' . $pictureFileName->guessExtension();
-                    $pictureFileName->move('download/', $newFileNamePhoto);
-
+                    if ($aboutData == Null) {
+                        $newFileNameCv = $imageUploadService->uploadNewImage($cvFileName);
+                        $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
+                    } else {
+                        $newFileNameCv = $imageUploadService->uploadEditImage($cvFileName, $oldFilePathCV);
+                        $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePathPhoto);
+                    }
+                    $aboutData->setFileNameCv($newFileNameCv);
                     $aboutData->setFileNamePhoto($newFileNamePhoto);
                     $em->persist($aboutData);
                     $em->flush();
-                    $this->addFlash('success', 'Dodano zdjęcie');
+                    $this->addFlash('success', 'Dodano dane');
                 } catch (\Exception $e) {
                     $this->addFlash('error', 'Wystąpił nieoczekiwany błąd zdjęcia');
                 }
             }
-
-            $cvFileName = $form->get('fileNameCv')->getData();
-            if ($cvFileName) {
-                try {
-                    $oryginalFileName = pathinfo($cvFileName->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove; Lower()', $oryginalFileName);
-                    $newFileNameCv = $safeFileName . '-' . uniqid() . '.' . $cvFileName->guessExtension();
-                    $cvFileName->move('download/', $newFileNameCv);
-
-                    $aboutData->setFileNameCv($newFileNameCv);
-                    $em->persist($aboutData);
-                    $em->flush();
-                    $this->addFlash('success', 'Dodano CV');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd CV');
-                }
-            }
         }
-
         return $this->render('about/index.html.twig', [
             'aboutForm' => $form->createView(),
             'aboutData' => $aboutData,
