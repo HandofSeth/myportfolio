@@ -80,38 +80,11 @@
 					<div class="col-md-12 heading-section ftco-animate">
 						<h1 class="big">About</h1>
 						<h2 class="mb-4">O mnie</h2>
-						<p>{{aboutData.description}}</p>
-						<ul class="about-info mt-4 px-md-0 px-2">
-							<li class="d-flex">
-								<span>Imię:</span>
-								<span>{{aboutData.name}}</span>
-							</li>
-							<li class="d-flex">
-								<span>Data urodzenia:</span>
-								<span>{{aboutData.birth|date('d.m.Y')}}</span>
-							</li>
-							<li class="d-flex">
-								<span>Adres:</span>
-								<span>{{aboutData.address}}</span>
-							</li>
-							<li class="d-flex">
-								<span>Email:</span>
-								<span>{{aboutData.email}}</span>
-							</li>
-							<li class="d-flex">
-								<span>Telefon:
-								</span>
-								<span>{{aboutData.phone}}</span>
-							</li>
-						</ul>
+						<p>{{aboutData.description|raw}}</p>					
 					</div>
 				</div>
 				<div class="counter-wrap ftco-animate d-flex mt-md-3">
-					<div class="text">
-						<p class="mb-4">
-							<span class="number" data-number="{{aboutData.projects}}">0</span>
-							<span>Ukończone Projekty</span>
-						</p>
+					<div class="text">					
 						<p>
 							<a href="{{ asset('download/')}}{{ aboutData.fileNameCv }}" target="_blank" class="btn btn-primary py-3 px-3">Pobierz moje CV</a>
 						</p>

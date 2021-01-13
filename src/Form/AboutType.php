@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,7 +21,7 @@ class AboutType extends AbstractType
     {
         $builder
             ->add('rotate', TextType::class, ['label' => 'Elemet Rotate'])
-            ->add('description', TextType::class, ['label' => 'Opis'])
+            ->add('description', TextareaType::class, ['label' => 'Opis'])
             ->add('name', TextType::class, ['label' => 'Imię i nazwisko'])
             ->add('birth', BirthdayType::class, ['format' => 'dd-MM-yyyy', 'label' => 'Data urodzin'])
             ->add('address', TextType::class, ['label' => 'Adres'])

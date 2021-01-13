@@ -39,21 +39,22 @@ class TechnologiesController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('image_path')->getData();
-            if ($pictureFileName) {
-                try {
+            try {
+                if ($pictureFileName != null) {
                     $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
                     $newTechnologies->setImagePath($newFileNamePhoto);
-                    $em = $this->getDoctrine()->getManager();
-                    $newTechnologies->setIsPublic(0);
-                    $newTechnologies->setUploadedAt(new \DateTime());
-                    $newTechnologies->setModificatedAt(new \DateTime());
-                    $em->persist($newTechnologies);
-                    $em->flush();
-                    $this->addFlash('success', 'Dodano Technologie');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
+                $em = $this->getDoctrine()->getManager();
+                $newTechnologies->setIsPublic(0);
+                $newTechnologies->setUploadedAt(new \DateTime());
+                $newTechnologies->setModificatedAt(new \DateTime());
+                $em->persist($newTechnologies);
+                $em->flush();
+                $this->addFlash('success', 'Dodano Technologie');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
+
 
             return $this->redirectToRoute('admin_technologies');
         }
@@ -79,18 +80,21 @@ class TechnologiesController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('image_path')->getData();
-            if ($pictureFileName) {
-                try {
+            try {
+                if ($pictureFileName != null) {
                     $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
                     $technologies->setImagePath($newFileNamePhoto);
-                    $technologies->setModificatedAt(new \DateTime());
-                    $em->persist($technologies);
-                    $em->flush();
-                    $this->addFlash('success', 'Zmodyfikowano Technologie');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+                }else{
+                    $technologies->setImagePath($oldFilePath);
                 }
+                $technologies->setModificatedAt(new \DateTime());
+                $em->persist($technologies);
+                $em->flush();
+                $this->addFlash('success', 'Zmodyfikowano Technologie');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
+
             return $this->redirectToRoute('admin_technologies');
         }
 

@@ -32,28 +32,33 @@ class AboutController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $pictureFileName = $form->get('fileNamePhoto')->getData();
             $cvFileName = $form->get('fileNameCv')->getData();
-            if ($pictureFileName || $cvFileName) {
-
-                try {
-                    if ($aboutData == Null) {
+            try {
+                if ($aboutData == Null) {
+                    if ($pictureFileName != null || $cvFileName != null) {
                         $newFileNameCv = $imageUploadService->uploadNewImage($cvFileName);
                         $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
-                    } else {
+                        $aboutData->setFileNameCv($newFileNameCv);
+                        $aboutData->setFileNamePhoto($newFileNamePhoto);
+                    }
+                } else {
+                    if ($pictureFileName != null || $cvFileName != null) {
                         $newFileNameCv = $imageUploadService->uploadEditImage($cvFileName, $oldFilePathCV);
                         $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePathPhoto);
+                        $aboutData->setFileNameCv($newFileNameCv);
+                        $aboutData->setFileNamePhoto($newFileNamePhoto);
+                    } else {
+                        $aboutData->setFileNameCv($oldFilePathCV);
+                        $aboutData->setFileNamePhoto($oldFilePathPhoto);
                     }
-
-                    $aboutData->setFileNameCv($newFileNameCv);
-                    $aboutData->setFileNamePhoto($newFileNamePhoto);
-                    $em->persist($aboutData);
-                    $em->flush();
-                    $this->addFlash('success', 'Dodano dane');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd zdjęcia');
                 }
+
+                $em->persist($aboutData);
+                $em->flush();
+                $this->addFlash('success', 'Dodano dane');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd zdjęcia');
             }
         }
         return $this->render('about/index.html.twig', [

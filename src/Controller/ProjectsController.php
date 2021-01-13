@@ -39,22 +39,23 @@ class ProjectsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $pictureFileName = $form->get('photo_path')->getData();
-            if ($pictureFileName) {
-                try {
+            try {
+                if ($pictureFileName != null) {
                     $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
                     $newProjects->setPhotoPath($newFileNamePhoto);
-                    $newProjects->setIsPublic(0);
-                    $newProjects->setUploadedAt(new \DateTime());
-                    $newProjects->setModificatedAt(new \DateTime());
-                    $em->persist($newProjects);
-                    $em->flush();
-                    $this->addFlash('success', 'Dodano Projekt');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
+
+                $newProjects->setIsPublic(0);
+                $newProjects->setUploadedAt(new \DateTime());
+                $newProjects->setModificatedAt(new \DateTime());
+                $em->persist($newProjects);
+                $em->flush();
+                $this->addFlash('success', 'Dodano Projekt');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
+
             return $this->redirectToRoute('admin_projects');
         }
 
@@ -79,18 +80,20 @@ class ProjectsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('photo_path')->getData();
-            if ($pictureFileName) {
-                try {
-                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
 
+            try {
+                if ($pictureFileName != null) {
+                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
                     $project->setPhotoPath($newFileNamePhoto);
-                    $project->setModificatedAt(new \DateTime());
-                    $em->persist($project);
-                    $em->flush();
-                    $this->addFlash('success', 'Zedytowano projekt');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+                } else {
+                    $project->setPhotoPath($oldFilePath);
                 }
+                $project->setModificatedAt(new \DateTime());
+                $em->persist($project);
+                $em->flush();
+                $this->addFlash('success', 'Zedytowano projekt');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
             return $this->redirectToRoute('admin_projects');
         }
