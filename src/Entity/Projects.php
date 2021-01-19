@@ -58,6 +58,11 @@ class Projects
      */
     private $uploaded_at;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $git_path;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,6 +148,18 @@ class Projects
     public function setPhotoPath(?string $photo_path): self
     {
         $this->photo_path = $photo_path;
+
+        return $this;
+    }
+
+    public function getGitPath(): ?string
+    {
+        return $this->git_path;
+    }
+
+    public function setGitPath(?string $git_path): self
+    {
+        $this->git_path = $git_path;
 
         return $this;
     }

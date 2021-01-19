@@ -31,7 +31,8 @@
 		{% endblock %}
 	</head>
 	<body>
-		{% block body %}{% endblock %}
+		{% block body %}{% endblock %}		
+		{% include 'inc/cookies.html.twig' %}
 		{% block javascripts %}
 			<script src="{{ asset('assets/js/jquery.min.js')}}"></script>
 			<script src="{{ asset('assets/js/jquery-migrate-3.0.1.min.js')}}"></script>

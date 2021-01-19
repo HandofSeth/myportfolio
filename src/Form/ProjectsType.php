@@ -17,6 +17,7 @@ class ProjectsType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nazwa'])
             ->add('page_path', TextType::class, ['label' => 'Adres strony'])
+            ->add('git_path', TextType::class, ['label' => 'Adres projektu na github'])
             ->add('description', TextType::class, ['label' => 'Opis'])
             ->add('photo_path', FileType::class, [
                 'data_class' => null,
