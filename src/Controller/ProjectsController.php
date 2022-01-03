@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Service\ImagesUploadService;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProjectsController extends AbstractController
 {
@@ -31,7 +32,7 @@ class ProjectsController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request,  ImagesUploadService $imageUploadService)
+    public function new(Request $request,  ImagesUploadService $imageUploadService, SluggerInterface $slugger)
     {
         $newProjects = new Projects();
         $form = $this->createForm(ProjectsType::class, $newProjects);
@@ -42,7 +43,7 @@ class ProjectsController extends AbstractController
             $pictureFileName = $form->get('photo_path')->getData();
             try {
                 if ($pictureFileName != null) {
-                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
+                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName,$slugger);
                     $newProjects->setPhotoPath($newFileNamePhoto);
                 }
 
@@ -70,7 +71,7 @@ class ProjectsController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, $id, ImagesUploadService $imageUploadService)
+    public function edit(Request $request, $id, ImagesUploadService $imageUploadService, SluggerInterface $slugger)
     {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository(Projects::class)->find($id);
@@ -83,7 +84,7 @@ class ProjectsController extends AbstractController
 
             try {
                 if ($pictureFileName != null) {
-                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
+                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath,$slugger);
                     $project->setPhotoPath($newFileNamePhoto);
                 } else {
                     $project->setPhotoPath($oldFilePath);

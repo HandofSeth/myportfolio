@@ -11,8 +11,7 @@
 		Główna konfiguracja strony
 	</div>
 	<div class="card-body">
-		{% form_theme aboutForm 'bootstrap_4_layout.html.twig' %}
-		{{ form_start(aboutForm) }}
+		{% form_theme aboutForm 'bootstrap_4_layout.html.twig' %}		{{ form_start(aboutForm) }}
 		{{ form_row(aboutForm.rotate) }}
 		{{ form_row(aboutForm.description) }}
 		{{ form_row(aboutForm.name) }}
