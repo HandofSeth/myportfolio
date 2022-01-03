@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Service\ImagesUploadService;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TechnologiesController extends AbstractController
 {
@@ -31,7 +32,7 @@ class TechnologiesController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request, ImagesUploadService $imageUploadService)
+    public function new(Request $request, ImagesUploadService $imageUploadService, SluggerInterface $slugger)
     {
         $newTechnologies = new Technologies();
         $form = $this->createForm(TechnologiesType::class, $newTechnologies);
@@ -41,7 +42,7 @@ class TechnologiesController extends AbstractController
             $pictureFileName = $form->get('image_path')->getData();
             try {
                 if ($pictureFileName != null) {
-                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName);
+                    $newFileNamePhoto = $imageUploadService->uploadNewImage($pictureFileName,$slugger);
                     $newTechnologies->setImagePath($newFileNamePhoto);
                 }
                 $em = $this->getDoctrine()->getManager();
@@ -70,7 +71,7 @@ class TechnologiesController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, $id, ImagesUploadService $imageUploadService)
+    public function edit(Request $request, $id, ImagesUploadService $imageUploadService, SluggerInterface $slugger)
     {
         $em = $this->getDoctrine()->getManager();
         $technologies = $em->getRepository(Technologies::class)->find($id);
@@ -82,7 +83,7 @@ class TechnologiesController extends AbstractController
             $pictureFileName = $form->get('image_path')->getData();
             try {
                 if ($pictureFileName != null) {
-                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath);
+                    $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath,$slugger);
                     $technologies->setImagePath($newFileNamePhoto);
                 }else{
                     $technologies->setImagePath($oldFilePath);
